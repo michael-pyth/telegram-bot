@@ -3,8 +3,10 @@ import config, datetime, keyboards, random, json, base64, os, asyncio
 from FusionBrain_AI import generate
 from pyrogram.types import ForceReply
 
+#there may be some places where you need to change a file path that i havent found, so please do
+
 bot = Client(
-    "bozoBot",
+    "bot name", #add bot name here
     api_id=config.API_ID,
     api_hash=config.API_HASH,
     bot_token=config.BOT_TOKEN
@@ -38,7 +40,6 @@ def ensure_user(users, user_id):
 async def start(client, message):
     await message.reply('i have awoken (use the menu with the weird 4 balls for convenience)',
                         reply_markup=keyboards.kb_main)
-    await client.send_photo(message.chat.id, 'files/cat.jpg')
     users = load_users()
     ensure_user(users, message.from_user.id)
     save_users(users)
@@ -181,7 +182,7 @@ async def image(client, message):
         if images:
             image_data = base64.b64decode(images[0])
             random_number = random.randint(1, 10000)
-            filename = f'images/image{random_number}.jpg'
+            filename = f'images/image{random_number}.jpg' #change path to folder
             with open(filename, 'wb') as file:
                 file.write(image_data)
             await bot.send_photo(message.chat.id, filename, reply_to_message_id=message.id)
@@ -250,5 +251,6 @@ async def echo(client, message):
         await message.reply('bye (and stay away)')
     else:
         await message.reply(f'you wrote: {message.text}')
+
 
 bot.run()
